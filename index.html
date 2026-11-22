@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Conta Certa — sistema demonstrativo de gestão financeira inteligente.">
+  <title>Conta Certa – Gestão Financeira Inteligente</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Conta Certa, página inicial" data-view="dashboard">
+        <span class="brand-mark">CC</span>
+        <span><strong>Conta Certa</strong><small>Gestão inteligente</small></span>
+      </a>
+      <div class="side-label">MENU PRINCIPAL</div>
+      <nav class="nav-menu" aria-label="Menu principal">
+        <button class="nav-link active" data-view="dashboard"><span class="nav-icon">▦</span> Visão geral</button>
+        <button class="nav-link" data-view="receitas"><span class="nav-icon">↗</span> Receitas</button>
+        <button class="nav-link" data-view="despesas"><span class="nav-icon">↙</span> Despesas</button>
+        <button class="nav-link" data-view="analise"><span class="nav-icon">✧</span> Análise inteligente</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="ai-note"><span class="ai-spark">✦</span><strong>Inteligência a favor do seu negócio</strong><p>Organize os números e encontre oportunidades para economizar.</p></div>
+        <div class="sidebar-footer">Projeto demonstrativo escolar<br>© <span id="year"></span> Conta Certa</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Abrir menu">☰</button>
+        <div><p class="eyebrow">GESTÃO FINANCEIRA</p><h1 id="pageTitle">Visão geral</h1></div>
+        <div class="topbar-right"><span class="status-dot"></span><span>Dados salvos neste navegador</span></div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="welcome-row"><div><h2>Olá! Aqui está o resumo do seu negócio.</h2><p>Acompanhe suas movimentações e mantenha as finanças em dia.</p></div><span class="date-chip" id="todayLabel"></span></div>
+        <div class="metrics-grid">
+          <article class="metric-card"><div class="metric-top"><span>Total de receitas</span><span class="metric-icon income">↗</span></div><strong id="dashIncome">R$ 0,00</strong><small>Entradas cadastradas</small></article>
+          <article class="metric-card"><div class="metric-top"><span>Total de despesas</span><span class="metric-icon expense">↙</span></div><strong id="dashExpense">R$ 0,00</strong><small>Saídas cadastradas</small></article>
+          <article class="metric-card"><div class="metric-top"><span>Saldo financeiro</span><span class="metric-icon balance">＝</span></div><strong id="dashBalance">R$ 0,00</strong><small>Receitas menos despesas</small></article>
+          <article class="metric-card"><div class="metric-top"><span>Lançamentos</span><span class="metric-icon count">▤</span></div><strong id="dashCount">0</strong><small>Registros no sistema</small></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Despesas por categoria</h3><p>Distribuição dos gastos cadastrados</p></div><span class="panel-tag">Visão geral</span></div><div class="chart-wrap"><canvas id="expenseChart" aria-label="Gráfico de despesas por categoria"></canvas><div id="chartLegend" class="chart-legend"></div></div></article>
+          <article class="panel summary-panel"><div class="panel-heading"><div><h3>Resumo financeiro</h3><p>Como está a saúde do caixa</p></div><span class="summary-icon">✦</span></div><div id="financialSummary" class="summary-content"></div><a href="#" class="text-link" data-view="analise">Ver análise inteligente <span>→</span></a></article>
+        </div>
+        <article class="panel recent-panel"><div class="panel-heading"><div><h3>Movimentações recentes</h3><p>Últimos lançamentos registrados</p></div><div class="inline-actions"><a href="#" class="text-link" data-view="receitas">Ver receitas</a><a href="#" class="text-link" data-view="despesas">Ver despesas</a></div></div><div class="table-wrap"><table><thead><tr><th>Descrição</th><th>Categoria</th><th>Data</th><th>Tipo</th><th class="align-right">Valor</th></tr></thead><tbody id="recentTable"></tbody></table></div></article>
+      </section>
+
+      <section class="view" id="view-receitas">
+        <div class="section-intro"><div><h2>Controle de receitas</h2><p>Registre o dinheiro que entra no negócio.</p></div><span class="section-count" id="incomeCount">0 registros</span></div>
+        <div class="content-grid">
+          <article class="panel form-panel"><div class="panel-heading"><div><h3>Adicionar receita</h3><p>Preencha os dados da entrada.</p></div><span class="form-icon income">＋</span></div>
+            <form id="incomeForm" class="entry-form">
+              <label for="incomeDescription">Descrição</label><input id="incomeDescription" name="description" type="text" placeholder="Ex.: Serviço prestado ao cliente" maxlength="70" required>
+              <label for="incomeCategory">Categoria</label><select id="incomeCategory" name="category" required><option value="Serviços">Serviços</option><option value="Vendas">Vendas</option><option value="Consultoria">Consultoria</option><option value="Outras receitas">Outras receitas</option></select>
+              <label for="incomeAmount">Valor (R$)</label><input id="incomeAmount" name="amount" type="number" min="0.01" step="0.01" placeholder="0,00" required>
+              <label for="incomeDate">Data</label><input id="incomeDate" name="date" type="date" required>
+              <button class="primary-btn" type="submit">＋ Cadastrar receita</button>
+            </form>
+          </article>
+          <article class="panel list-panel"><div class="panel-heading"><div><h3>Receitas cadastradas</h3><p>Entradas financeiras do escritório.</p></div><span class="total-pill income-pill" id="incomeTotal">R$ 0,00</span></div><div id="incomeList" class="transaction-list"></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-despesas">
+        <div class="section-intro"><div><h2>Controle de despesas</h2><p>Registre e acompanhe os custos do negócio.</p></div><span class="section-count" id="expenseCount">0 registros</span></div>
+        <div class="content-grid">
+          <article class="panel form-panel"><div class="panel-heading"><div><h3>Adicionar despesa</h3><p>Preencha os dados da saída.</p></div><span class="form-icon expense">－</span></div>
+            <form id="expenseForm" class="entry-form">
+              <label for="expenseDescription">Descrição</label><input id="expenseDescription" name="description" type="text" placeholder="Ex.: Compra de materiais" maxlength="70" required>
+              <label for="expenseCategory">Categoria</label><select id="expenseCategory" name="category" required><option>Aluguel</option><option>Salários e encargos</option><option>Internet e telefone</option><option>Energia elétrica</option><option>Material de escritório</option><option>Assinaturas de softwares</option><option>Água e limpeza</option><option>Marketing</option><option>Transporte</option><option>Impostos</option><option>Outras despesas</option></select>
+              <label for="expenseAmount">Valor (R$)</label><input id="expenseAmount" name="amount" type="number" min="0.01" step="0.01" placeholder="0,00" required>
+              <label for="expenseDate">Data</label><input id="expenseDate" name="date" type="date" required>
+              <button class="primary-btn" type="submit">＋ Cadastrar despesa</button>
+            </form>
+          </article>
+          <article class="panel list-panel"><div class="panel-heading"><div><h3>Despesas cadastradas</h3><p>Custos e pagamentos do escritório.</p></div><span class="total-pill expense-pill" id="expenseTotal">R$ 0,00</span></div><div id="expenseList" class="transaction-list"></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-analise">
+        <div class="section-intro"><div><h2>Análise financeira inteligente</h2><p>Uma leitura dos dados para apoiar decisões melhores.</p></div><span class="ai-badge">✦ Análise estimada por regras</span></div>
+        <div class="analysis-highlight"><div class="highlight-symbol">✧</div><div><strong>O que os números estão dizendo?</strong><p id="analysisHeadline">Adicione lançamentos para receber uma análise.</p></div></div>
+        <div class="analysis-grid">
+          <article class="panel"><div class="panel-heading"><div><h3>As 3 maiores despesas</h3><p>Itens com maior impacto no caixa.</p></div></div><div id="topExpenses" class="rank-list"></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>Gastos por categoria</h3><p>Participação de cada categoria no total.</p></div></div><div id="categoryBreakdown" class="breakdown-list"></div></article>
+        </div>
+        <article class="panel opportunities-panel"><div class="panel-heading"><div><h3>Oportunidades de economia</h3><p>Sugestões práticas com base nos lançamentos atuais.</p></div><span class="opportunity-icon">✦</span></div><div id="savingSuggestions" class="suggestion-grid"></div></article>
+        <article class="panel simulation-panel"><div class="panel-heading"><div><h3>Simulador de economia</h3><p>Veja como uma redução estimada pode impactar o saldo.</p></div><span class="simulation-label">Simulação</span></div><div class="simulation-numbers"><div><span>Saldo atual</span><strong id="beforeSaving">R$ 0,00</strong></div><div class="simulation-arrow">→</div><div><span>Economia estimada</span><strong class="positive" id="savingAmount">R$ 0,00</strong></div><div class="simulation-arrow">→</div><div class="after-box"><span>Saldo após economia</span><strong id="afterSaving">R$ 0,00</strong></div></div><p class="disclaimer">Atenção: esta análise utiliza regras simples e percentuais ilustrativos. As oportunidades são estimativas educativas, não garantias de economia nem recomendações financeiras profissionais.</p></article>
+        <div class="reset-row"><div><strong>Quer recomeçar a demonstração?</strong><p>Restaure os lançamentos fictícios utilizados no trabalho escolar.</p></div><button class="secondary-btn" id="resetData">↻ Restaurar dados iniciais</button></div>
+      </section>
+
+      <footer class="main-footer">Conta Certa · Sistema fictício para fins educativos · Seus dados ficam armazenados localmente no navegador.</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
